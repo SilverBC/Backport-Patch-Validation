@@ -1,6 +1,6 @@
 # Backport Patch Validator (Proof-of-Concept version)
 
-The goal of this project is to ensure that the backported patches maintain their intent, logic and security of the original upstream changes, while adapting them to the target version of the codebase. In essense, the project uses 3 prompt approach to refine the context and provide better guidance to the LLMs. 
+The goal of this project is to make sure that the backported patches maintain their intent, logic and security of the original upstream changes, while adapting them to the target version of the codebase. In essense, the project uses 2 prompts to first refine the context and provide better guidance to the LLMs, and 1 prompt to make judgement based on refined context. 
 
 "Discarded Experiments" folder contains some failed attempts, that either overcomplicated the project or were otherwise unfruitful. 
 
@@ -39,8 +39,7 @@ for each task, an appropriate free LLM model was chosen. (the API keys can be ge
 The main script that orchestrates patch validation. It processes `upstream.patch`, `backporter.patch`, and `target_code` files, and writes results to CSV and text files.
 
 #### Key Functions:
-- **`get_verdict(result)`**: Determines verdict based on the `is_correct` field.
-- **`process_patches()`**: Parses patches, compares files, and writes results.
+- **`process_patches()`**: compares given .patch files, and writes results.
 - **`main()`**: Iterates over samples, processes patches, and compares verdicts.
 
 ---
@@ -58,12 +57,11 @@ Handles AI-based reasoning and validation using the OpenRouter API.
 ---
 
 #### **prompts.py**
-Contains prompts for AI models to analyze and validate patches.
+Contains prompts for instructing LLM models such as:
 
-#### Key Prompts:
-- **`COMPARE_INTENT_PROMPT`**: Analyzes discrepancies in intent and logic.
-- **`ABSTRACT_CODE_PROMPT`**: Abstracts target code for focused context.
-- **`VALIDATE_WITH_CONTEXT_PROMPT`**: Validates discrepancies using abstracted target code and provides verdicts.
+- **`COMPARE_INTENT_PROMPT`**: used in **`compare_intent()`**
+- **`ABSTRACT_CODE_PROMPT`**: used in **`abstract_code_context()`**
+- **`VALIDATE_WITH_CONTEXT_PROMPT`**: used in **`validate_with_context()`**
 
 ---
 
@@ -72,8 +70,5 @@ Utility functions for parsing, JSON repair, and writing results.
 
 #### Key Functions:
 - **`repair_json()`**: Fixes malformed JSON responses.
-- **`get_file_from_path()`**: Finds files in patch sets.
-- **`create_csv()`**: Appends verdicts to CSV.
 - **`compare_verdicts()`**: Compares verdicts between CSV files.
-- **`write_verification_results_txt()`**: Writes detailed results to text files.
 
