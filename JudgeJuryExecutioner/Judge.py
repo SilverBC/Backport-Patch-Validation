@@ -1,16 +1,20 @@
 from prompts import COMPARE_INTENT_PROMPT, ABSTRACT_CODE_PROMPT, VALIDATE_WITH_CONTEXT_PROMPT
 from parser import repair_json
 from openai import OpenAI
+from dotenv import load_dotenv
+import os
 import time
 
-OPENROUTER_BASE_URL = "INSERT URL"
-OPENROUTER_API_KEY = "INSERT API KEY"
+load_dotenv()
+
+BASE_URL = os.getenv("BASE_URL")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 class Judge:
     def __init__(self):
         """Initialize OpenAI client for OpenRouter"""
         self.client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
+            base_url=BASE_URL,
             api_key=OPENROUTER_API_KEY,
         )
 

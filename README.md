@@ -6,7 +6,7 @@ The goal of this project is to ensure that the backported patches maintain their
 
 #### Prerequisites
  - Python 3.12
- - API keys for [OpenRouter](https://openrouter.ai/). (which I can provide if asked)
+ - API keys for [OpenRouter](https://openrouter.ai/)
 
 #### Running the Script
 - python -m venv venv
@@ -14,7 +14,8 @@ The goal of this project is to ensure that the backported patches maintain their
    - windows: (venv\Scripts\activate)
    - linux: (source venv/bin/activate)
 - pip install -r requirements.txt
-- python JuryExecutioner.py
+- add the OpenRouter API key to .env file
+- python JudgeJuryExecutioner\JuryExecutioner.py
 
 finally, Check the output files (verdicts_JudgeJuryExecutioner.csv and verification_results.txt) for results.
 
