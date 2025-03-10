@@ -4,6 +4,19 @@ The goal of this project is to ensure that the backported patches maintain their
 
 "Discarded Experiments" folder contains some failed attempts, that either overcomplicated the project or were otherwise unfruitful. 
 
+#### Prerequisites
+ - Python 3.12
+ - API keys for [OpenRouter](https://openrouter.ai/). (which I can provide if asked)
+
+#### Running the Script
+- python -m venv venv
+- windows: (venv\Scripts\activate) | linux: (source venv/bin/activate)
+- pip install -r requirements.txt
+- python JuryExecutioner.py
+
+finally, Check the output files (verdicts_JudgeJuryExecutioner.csv and verification_results.txt) for results.
+
+
 ## Workflow Overview
 ![Basic Graph](imgs/Basic_Graph.png)
 
@@ -60,16 +73,4 @@ Utility functions for parsing, JSON repair, and writing results.
 - **`create_csv()`**: Appends verdicts to CSV.
 - **`compare_verdicts()`**: Compares verdicts between CSV files.
 - **`write_verification_results_txt()`**: Writes detailed results to text files.
-
-#### Prerequisites
- - Python 3.12
- - API keys for [OpenRouter](https://openrouter.ai/). (which I can provide if asked)
-
-#### Running the Script
-- python -m venv venv
-- windows: (venv\Scripts\activate) | linux: (source venv/bin/activate)
-- pip install -r requirements.txt
-- python JuryExecutioner.py
-
-finally, Check the output files (verdicts_JudgeJuryExecutioner.csv and verification_results.txt) for results.
 
