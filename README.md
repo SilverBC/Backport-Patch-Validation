@@ -31,8 +31,8 @@ for each task, an appropriate free LLM model was chosen. (the API keys can be ge
 
 ### Key Components
 - **JuryExecutioner.py**: Main script for processing patches.
-- **Judge.py**: Handles AI-based reasoning and validation.
-- **prompts.py**: Contains prompts for AI models.
+- **Judge.py**: Handles API calls to the LLMs.
+- **prompts.py**: Contains prompts for AI models, used by Judge.py.
 - **parser.py**: Utility functions for parsing and writing results.
 
 #### **JuryExecutioner.py**
