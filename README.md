@@ -10,7 +10,9 @@ The goal of this project is to ensure that the backported patches maintain their
 
 #### Running the Script
 - python -m venv venv
-- windows: (venv\Scripts\activate) | linux: (source venv/bin/activate)
+- Activate the venv
+   - windows: (venv\Scripts\activate)
+   - linux: (source venv/bin/activate)
 - pip install -r requirements.txt
 - python JuryExecutioner.py
 
