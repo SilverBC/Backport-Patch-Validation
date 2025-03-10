@@ -1,0 +1,485 @@
+File:
+ Lib/email/_header_value_parser.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided JSON indicates no discrepancies, meaning the backported patch aligns with the upstream patch within the context of the abstracted target code.  No security or functionality risks are identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_policybase.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "The provided code is an abstraction, and the differences mentioned are related to the presence or absence of certain attributes and methods within the `Policy` and `Compat32` classes. Based on the abstracted code, the core functionality related to policy handling appears to be present. The differences in specific attributes like `utf8`, `must_be_7bit`, and methods like `header_factory`, `raw_data_manager` are not reflected in this abstraction, but their absence doesn't necessarily indicate an error without the full implementation context. The abstract methods and core attributes like `linesep`, `max_line_length`, `mangle_from_`, and the general structure of `Policy` and `Compat32` are present. Therefore, within the limitations of the abstraction, the backport appears correct.", 'suggested_fixes': 'None, given the provided abstraction. A full code review would be needed to definitively confirm correctness.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/errors.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided JSON indicates no discrepancies, and the target code confirms the presence of all listed exception and defect classes. No security or functionality risks are identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/generator.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': 'The upstream patch adds a check for folded headers that contain a bare newline, while the backported patch does not. However, the target code already includes a regex `NEWLINE_WITHOUT_FWSP` and associated logic in `_write_headers` that performs a similar check. The `removesuffix` method is available from Python 3.9, and the target code is likely intended for an older Python version. The backported patch achieves the same intent using the existing regex and logic, so the discrepancy is justified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_generator.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Testing', 'explanation': "The backported patch omits 'test_keep_encoded_newlines' and 'test_keep_long_encoded_newlines' tests. These tests might be relevant for ensuring correct handling of newlines in headers, which is important for email standards compliance and preventing potential injection vulnerabilities.", 'suggested_fixes': 'Add the missing tests to the backported patch.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_policy.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch omits the `verify_generated_headers` attribute in the `default_policy_attributes` dictionary, which is added in the upstream. This attribute is crucial for the `test_verify_generated_headers` test case and likely has security implications related to header injection, as suggested by the test's docstring. The absence of this attribute in the default policy could lead to different behavior compared to the upstream version, potentially making the system vulnerable to header injection attacks if the default policy is used.", 'suggested_fixes': "Add 'verify_generated_headers' to the default_policy_attributes dictionary in the backported patch, initializing it appropriately (likely to True, based on the upstream context and the purpose of the test). Also, ensure the test `test_verify_generated_headers` is included or adapted if necessary."}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_header_value_parser.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The backported patch uses `str(value)` where the upstream uses `value.decode(charset, 'surrogateescape')`. This difference is acceptable because the backported code is designed to handle strings, while the upstream is designed to handle bytes. The `str(value)` call in the backport will correctly handle the string input, and the rest of the logic (replacing backslashes and quotes) is identical. The core functionality of escaping special characters for a quoted string is preserved.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_policybase.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches, and the abstracted target code confirms the presence of relevant classes and methods. Therefore, the backport is considered correct based on the available data.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/errors.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches, and the expert assessment confirms no security or functionality risks.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/generator.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The additional 'import random' is present in the abstracted target code, so it's not an extraneous addition in the backported patch. The form feed character (U+000C) after the regex definition is a minor formatting difference that doesn't affect functionality or security.", 'suggested_fixes': []}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_generator.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Import Discrepancy', 'explanation': "The backported patch adds 'from email.message import Message' which is not present in the upstream patch. While not inherently wrong, it's unnecessary as 'Message' is already imported in the shared code. The backport also misses 'import email.errors', which is present in upstream and used in the 'test_verify_generated_headers' function. This omission can cause a NameError.", 'suggested_fixes': "Remove the unnecessary import of 'Message'. Add 'import email.errors' to the backported patch."}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_policy.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch misses adding 'verify_generated_headers': True to the default policy attributes in the test setup. The upstream patch includes this attribute, and its absence in the backported patch could lead to tests not accurately reflecting the intended behavior, especially concerning header injection protection. The `test_verify_generated_headers` test specifically checks for header injection vulnerabilities, and initializing the default policy with `verify_generated_headers=False` is crucial for testing the intended security feature.", 'suggested_fixes': "Add 'verify_generated_headers': True to the `policy_defaults` dictionary in the `PolicyAPITests` class, similar to the upstream patch. This will ensure the test environment is correctly initialized to verify the security feature related to header injection."}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_header_value_parser.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided JSON indicates no discrepancies, and a previous expert has already assessed that there are no security or functionality risks. Therefore, the backported patch is considered correct in this context.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_policybase.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies dictionary indicates no differences, no security risk, and no functionality risk. Given the abstracted target code and the empty discrepancies list, the backport is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/errors.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided JSON indicates no discrepancies, and the target code confirms the presence of all listed exception and defect classes. No security or functionality risks are identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/generator.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies object indicates no differences, security risks, or functionality risks. Therefore, the backported patch is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_generator.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The backported patch places `test_verify_generated_headers` in `TestGeneratorBase`, causing it to run for both `TestGenerator` and `TestBytesGenerator`. The upstream patch only places it in `TestGenerator`.  This is a problem because the test uses `message.as_string()`, which is only appropriate for `TestGenerator`. `TestBytesGenerator` should use `message.as_bytes()`. Running the string-based test against the bytes generator will lead to incorrect testing and potentially mask header injection vulnerabilities in the BytesGenerator.', 'suggested_fixes': 'Move `test_verify_generated_headers` from `TestGeneratorBase` to `TestGenerator`.  Create a new test, `test_verify_generated_headers_bytes`, in `TestBytesGenerator` that is a copy of the original, but calls `message.as_bytes()` instead of `message.as_string()`.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_policy.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies array is empty, indicating no differences were found between the upstream and backported patches. Therefore, the backport is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The backported patch is missing a crucial security check present in the upstream patch. The upstream patch checks for an excessive number of push headers (over 1000) in the `on_header` function to prevent memory exhaustion. This check is absent in the backported patch, making it vulnerable to denial-of-service attacks.', 'suggested_fixes': 'Add the check for excessive push headers ( `if(stream->push_headers_used >= 1000)` ) in the equivalent of the `on_header` function in the backported patch. This check should prevent allocating memory for an unreasonable number of headers.'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The backported patch is missing the function definition for `h2_process_pending_input`. This function is present in the provided abstracted code and seems crucial for processing incoming data in an HTTP/2 connection. Its absence could lead to incomplete or incorrect handling of HTTP/2 traffic.', 'suggested_fixes': 'Include the full definition of `h2_process_pending_input` from the upstream patch in the backported patch.'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Minor', 'explanation': "The `free_push_headers` function uses `struct HTTP *stream` in the backported code, while the context suggests it should operate on a similar structure. The upstream uses `struct HTTP *`. This difference might be due to how the backported code handles HTTP/2 streams, and the core logic (freeing header entries and the array) remains the same. However, `realloc` is used in the backported patch instead of `Curl_saferealloc`. `Curl_saferealloc` provides additional safety checks. The different code location of `free_push_headers` is likely due to code organization differences between versions and doesn't inherently pose a problem, assuming all necessary headers and dependencies are correctly included.", 'suggested_fixes': '1.  Investigate the type differences between `h2_stream_ctx` and `HTTP`. If they are functionally equivalent in this context, the discrepancy might be acceptable. If not, align the backported code with the appropriate type for the target codebase. 2. Replace `realloc` with `Curl_saferealloc` in the `on_header` function to maintain consistent error handling and memory safety. 3. Ensure that the placement of `free_push_headers` does not introduce any dependency issues.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code snippet does not show any discrepancies, as the judgment indicates no security or functionality risks and no discrepancies were found.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_tarfile.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Test Context/Location', 'explanation': 'The discrepancy notes that `test_pax_header_bad_formats` is placed in `PaxReadTest` in the backported patch, while the upstream patch places it in a different, likely write-related, test class.  The provided code *only* shows the backported version within `PaxReadTest`.  The core logic of the test involves *writing* a tarfile with manipulated PAX headers and then attempting to *read* it, expecting `ReadError` exceptions for malformed headers.  Placing it in a read-test class is contextually incorrect, as the test *creates* the malformed archive. The test *should* be in a write-related test class, as implied by the upstream. This misplacement could lead to incorrect test setup or execution, and potentially mask bugs or introduce false positives. The test logic itself is correct, but its location is wrong.', 'suggested_fixes': 'Move the `test_pax_header_bad_formats` method to the appropriate write-related test class, as it is in the upstream patch. This ensures the test runs in the correct context and with the proper setup/teardown procedures.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies object indicates no differences, no security risk, and no functionality risk. Based on the abstracted target code and the empty discrepancies list, the backport is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_tarfile.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch uses a less specific error message ('file could not be opened successfully') in the `assertRaisesRegex` assertion compared to the upstream's expected 'invalid header'. This suggests the backported test might not be accurately verifying the specific failure mode related to PAX header malformations. The test is designed to check for specific `ReadError` types resulting from malformed PAX headers. A generic error message weakens this check, potentially allowing other, unrelated read errors to pass the test unnoticed.", 'suggested_fixes': "Modify the `assertRaisesRegex` assertion in the backported test to expect the more specific 'invalid header' message, aligning it with the upstream patch. This ensures that the test correctly identifies and validates the intended error condition related to PAX header parsing."}
+--------------------------------------------------------------------------------
+File:
+ Lib/http/cookies.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches. The target code, including the critical functions `_quote`, `_unquote_replace`, and `_unquote`, appears to be correctly implemented as intended. The regular expression and substitution logic for handling quoted strings and special characters are present and consistent with the expected behavior.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_http_cookies.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies object indicates no differences in security or functionality risk. Based on the abstracted target code and the nature of the test suite, no discrepancies were found that would alter the behavior or introduce vulnerabilities.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The RCSID version string is not critical for functionality or security. It's primarily for tracking versions and is often deliberately not updated in backports to avoid merge conflicts or to clearly indicate the origin of the backported code.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The review indicates no discrepancies, meaning the backported patch aligns with the upstream patch within the context of the abstracted target code. No security or functionality risks were identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_session.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code snippet shows no discrepancies, and the initial assessment confirms no security or functionality risks. The code appears to be a correct backport of the header callback functionality.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_stream.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The review indicates no discrepancies between the upstream and backported patches, suggesting the backport is correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_stream.h
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code is a header file defining the h2_stream structure and related functions. There are no functional differences to analyze, as the backported patch would relate to the implementation (.c file), not the interface definition (.h file).  All described elements are present and consistent in purpose.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/kdc/do_tgs_req.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "The backported patch correctly implements the intended logic of the upstream patch. The code copies the 'server' field from 'header_ticket' to 'ticket_reply', copies 'enc_tkt_reply' from 'header_ticket->enc_part2', sets 'authorization_data' to NULL, and clears the 'TKT_FLG_INVALID' flag. These actions align with the described functionality of handling the KDC_OPT_VALIDATE flag.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/kdc/do_tgs_req.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided context shows no discrepancies. The judgment from the previous expert indicates no security or functionality risks, and the abstracted code confirms that the core logic related to ticket processing (validation, renewal, and time calculations) is present and consistent with the expected behavior.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ ssh.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The discrepancies are justified. The placement of `valid_hostname` and `valid_ruser` functions doesn't affect the logic, as C allows forward declarations. The change from `options.host_arg` to `host_arg` is likely due to differences in how options are handled in the backported version; the provided code snippet shows `host_arg` being assigned the value of `host`, and the critical check `valid_hostname(host)` is present, indicating the core logic is preserved. The usage of `host` instead of `options.host` is consistent within the provided `main` function.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ 
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "1. free_push_headers operating on struct HTTP is justified as the backport's HTTP struct contains push_headers fields. 2. Checking header limit after realloc allows exceeding the 1000-header cap, creating a security/functionality risk. 3. Using realloc instead of Curl_saferealloc risks memory leaks on allocation failure.", 'suggested_fixes': '1. Move header limit check (stream->push_headers_used >= 1000) before realloc to enforce the cap. 2. Replace realloc with Curl_saferealloc to safely handle allocation failures.'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch uses 'realloc' instead of 'Curl_saferealloc' for 'push_headers' allocation. While the code checks for failure and cleans up, 'Curl_saferealloc' is a safer wrapper that ensures proper error handling and memory management. This discrepancy introduces a functionality risk if 'realloc' fails unexpectedly.", 'suggested_fixes': "Replace 'realloc' with 'Curl_saferealloc' in the 'on_header' function when resizing 'stream->push_headers' to ensure consistent memory handling with upstream practices."}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch correctly implements security-critical header validation, error handling, and encoding fallbacks as per the upstream logic. All critical checks for header length, format, and decoding are preserved without discrepancies.', 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_tarfile.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported test's regex pattern for ReadError includes 'method tar: ' prefix, which may not match the actual error message in the target environment. This discrepancy could cause false test failures if the error message format differs between versions.", 'suggested_fixes': "Adjust the regex to match the target version's ReadError message format, e.g., use r'invalid header' instead of r'method tar: ReadError\\(\\'invalid header\\'\\)' if the prefix is absent."}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported code correctly implements necessary checks for pax header parsing, including length validation, format verification, and proper error handling, aligning with security and functionality requirements.', 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_tarfile.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The error message mismatch ('invalid header' vs. 'file could not be opened successfully') weakens test specificity, potentially allowing invalid PAX headers to go undetected. Test class placement under PaxReadTest may be justified if PAX-specific, but the error message discrepancy directly impacts security and functionality.", 'suggested_fixes': "Update the backported patch's assertRaisesRegex to check for 'invalid header' error message. Verify if PaxReadTest is the correct test class for PAX-related tests in the target codebase."}
+--------------------------------------------------------------------------------
+File:
+ Lib/http/cookies.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "The backported code matches the upstream's security and functionality requirements for cookie unquoting, with proper octal handling and quote stripping as per RFC standards.", 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_http_cookies.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "No discrepancies detected; backported test suite matches upstream's security and functionality validations for cookie handling, including edge cases and attribute testing.", 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Minor', 'explanation': 'The backported patch retains an outdated RCSID version string (1.118 2020/12/08) while the upstream patch likely updated it. This creates version tracking discrepancies.', 'suggested_fixes': 'Update the RCSID in the backported patch to match the upstream version (e.g., adjust revision number and date).'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "No discrepancies found; the backported patch aligns with the abstracted target code's structure and critical functions. RCSID and function implementations are consistent with the provided context.", 'suggested_fixes': 'N/A'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_session.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch matches the upstream logic for handling header validation and error conditions, preserving security and functionality checks.', 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_stream.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The backported code uses HTTP_REQUEST_URI_TOO_LARGE (414) for header size limits instead of HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE (431), resulting in incorrect error responses.', 'suggested_fixes': 'Change error assignment from HTTP_REQUEST_URI_TOO_LARGE to HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE in h2_stream_add_header.'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_stream.h
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'No discrepancies found between the upstream and backported patches. The target code structure and function implementations align correctly with the intended changes.', 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ src/kdc/do_tgs_req.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch omits handling of KDC_OPT_RENEW required by the upstream patch, failing to apply critical ticket-copying logic to renewal requests. This creates a security and functionality gap as renewal operations won't inherit the same validation safeguards.", 'suggested_fixes': 'Add check for KDC_OPT_RENEW in the conditional: `if (isflagset(request->kdc_options, KDC_OPT_VALIDATE|KDC_OPT_RENEW))` to match upstream logic.'}
+--------------------------------------------------------------------------------
+File:
+ src/kdc/do_tgs_req.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The split into separate conditionals preserves core logic and avoids interaction between KDC_OPT_VALIDATE/RENEW handling. This structure matches the target code's existing pattern where RENEW has additional timestamp logic not applicable to VALIDATE.", 'suggested_fixes': ''}
+--------------------------------------------------------------------------------
+File:
+ ssh.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch incorrectly assigns to 'host_arg' instead of 'options.host_arg', leading to potential failure in propagating the host argument to the options struct. The version identifier mismatch is a maintenance issue but not critical. Function placement differences are acceptable if compilation order is preserved.", 'suggested_fixes': "Replace 'host_arg = xstrdup(host);' with 'options.host_arg = xstrdup(host);' in the backported patch to match upstream's struct usage."}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided backported patch and abstracted target code show no discrepancies. The expert review confirms no security or functionality risks. The code includes the necessary function `file_copystr` and other supporting elements. No issues are identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code is an abstraction of the target code, and the backported patch does not introduce any changes to this abstracted code. The RCSID is present and correct in the abstracted code. There are no discrepancies to analyze within the context of this abstraction.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies object indicates no discrepancies, no security risk, and no functionality risk. The backported patch aligns with the abstracted target code.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided patch and abstracted target code show no discrepancies. The expert assessment confirms no security or functionality risks. All code elements are present and consistent with the expected structure.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_header_value_parser.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided patch and abstracted target code show no discrepancies. The code appears to be correctly backported, with all relevant logic and constants present.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_policybase.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code is a backport of the email library policy framework.  There are no functional differences between this backported code and the hypothetical upstream version, given the abstracted context. The code defines the expected classes (`Policy`, `Compat32`, etc.) and their core attributes and methods.  The abstracted functions (`__init__`, `__repr__`, `handle_defect`, etc.) are present, and the critical functions (`header_source_parse`, `fold`, etc.) are also present, indicating that the core logic related to parsing and folding email headers is included. The `mangle_from_` attribute is correctly set to `True` in `Compat32`, and other policy attributes are initialized as expected. No discrepancies are apparent that would affect functionality or security within the provided context.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/errors.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch introduces new exception classes and defects related to header parsing, which are consistent with the abstracted target code. There are no functional or security-related discrepancies.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/generator.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies list is empty, indicating no differences were found between the backported patch and the upstream patch. Therefore, the backport is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_generator.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Missing Tests', 'explanation': 'The backported patch is missing `test_keep_encoded_newlines` and `test_keep_long_encoded_newlines` tests. These tests are crucial for validating the correct handling of encoded newlines in headers, which is a potential security concern (header injection). The absence of these tests means this specific behavior is not verified in the backported version.', 'suggested_fixes': 'Add the missing tests (`test_keep_encoded_newlines` and `test_keep_long_encoded_newlines`) from the upstream patch to the backported patch.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_policy.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch does not add 'verify_generated_headers': True to the default policy settings. This setting was introduced in the upstream as a security fix to prevent header injection. Omitting it reintroduces a security vulnerability.", 'suggested_fixes': "Add 'verify_generated_headers': True to the 'policy_defaults' dictionary within the `PolicyAPITests` class, similar to how other default settings are added. Specifically, add the line `'verify_generated_headers': True,` inside the `policy_defaults.update` block."}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_header_value_parser.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The previous expert found no discrepancies, and the provided abstracted code and patch do not indicate any issues. The backported patch appears to be correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_policybase.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch is correct. The differences observed are due to the abstraction process and do not represent actual discrepancies in the code logic or functionality. The core classes and methods, including `Policy`, `Compat32`, and their attributes, are present and consistent with the expected structure. The abstracted function implementations are assumed to be correct within the context of the target codebase.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/errors.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch introduces new exception classes and defects related to header parsing, specifically `HeaderDefect`, `InvalidHeaderDefect`, `HeaderMissingRequiredValue`, `NonPrintableDefect`, `ObsoleteHeaderDefect`, and `NonASCIILocalPartDefect`. These additions are consistent with the overall structure and purpose of the `email.errors` module, which is to define exception classes for various error conditions encountered during email processing. The code includes proper inheritance from existing base classes (e.g., `HeaderDefect` inherits from `MessageDefect`, and others inherit from `HeaderDefect`). The `NonPrintableDefect` class includes a custom `__str__` method to provide a more informative error message, which is a good practice. The comment for `NonASCIILocalPartDefect` clarifies its context, indicating it only applies during Unicode parsing. Overall, the backported patch appears to be a correct and well-structured addition to the `email.errors` module.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/generator.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The previous expert found no discrepancies, and a review of the abstracted code and backported patch confirms this. The backport appears to be a clean and accurate representation of the upstream patch within the context of the target codebase.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_generator.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Missing Import', 'explanation': "The backported patch is missing 'import email.errors', which is used in the `test_verify_generated_headers` method. This can cause a NameError if the test is run, as the exception `email.errors.HeaderWriteError` will not be defined.", 'suggested_fixes': "Add 'import email.errors' to the backported patch."}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_policy.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The backported patch omits the `verify_generated_headers` attribute in the `default_policy_values` dictionary during test setup. This attribute is crucial for testing the security feature that prevents header injection. Without it, the test suite might not accurately reflect the intended behavior of the policy and could miss potential vulnerabilities.', 'suggested_fixes': "Add `'verify_generated_headers': True` to the `default_policy_values` dictionary in the backported patch, similar to the upstream patch. This will ensure that the tests correctly validate the header injection prevention mechanism."}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_header_value_parser.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches, and the previous expert assessment confirms no security or functionality risks.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/_policybase.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches. All listed attributes and methods in the abstracted code are present, and the previous expert judgment confirms no security or functionality risks.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/errors.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches. The abstracted target code and the backported patch file name suggest that the backport is consistent with the expected structure and content. No security or functionality risks are identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/email/generator.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The previous expert found no discrepancies, and the provided code context supports this conclusion. The backported patch appears to be correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_generator.py
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The `test_verify_generated_headers` test is present in `TestGeneratorBase` in the backported patch. This means it applies to both `TestGenerator` and `TestBytesGenerator`.  The upstream patch, however, only places this test in `TestGenerator`.  This is a significant discrepancy because `BytesGenerator` might not have the same header injection protections as `Generator`, and this backport implicitly assumes they do (or are not needed). This could lead to a security vulnerability in `BytesGenerator` if the corresponding fix was not also backported, or if `BytesGenerator` handles headers differently.', 'suggested_fixes': '1.  Investigate the upstream code and determine if the fix for gh-121650 applies to `BytesGenerator` as well.  If it does, the test should remain in `TestGeneratorBase`.  If it does *not*, the test should be moved to `TestGenerator` to match the upstream patch, and a comment should be added explaining why it does not apply to `BytesGenerator`. 2. If the fix *does* apply to `BytesGenerator`, ensure that the code changes related to the fix are also correctly backported, not just the test. 3. If the fix does *not* apply, consider whether a different fix is needed for `BytesGenerator` to address the same potential header injection issue.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_email/test_policy.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch is correct. The test `test_verify_generated_headers` was added in Python 3.6 and is present in the backported patch, which is expected. There are no functional differences between the upstream and backported patches that would affect the correctness of the backport.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch correctly maintains the calls to `free_push_headers` in `http2_stream_free`, `push_promise`, `on_header`, and `Curl_http2_done`. The logic and intent of freeing the push headers are preserved across all relevant functions. There are no functional or security implications identified.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "The provided code is an abstraction of the target code and the diff is not provided. Based on the abstraction, there are no functional differences to analyze. All listed functions are present, and without concrete diff details, it's impossible to determine if there are any problematic discrepancies. The prompt describes the abstraction process, which inherently implies differences, but not necessarily errors.", 'suggested_fixes': 'N/A'}
+--------------------------------------------------------------------------------
+File:
+ lib/http2.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "The backported patch uses `struct HTTP` in `free_push_headers` while the upstream uses `struct h2_stream_ctx`. Although functionally similar within their respective contexts, consistency is preferred. More importantly, `realloc` is used instead of `Curl_saferealloc` for resizing `push_headers`, and the backported `free_push_headers` is missing the corresponding `Curl_safefree` call. The lack of `Curl_saferealloc` and `Curl_safefree` bypasses the built-in heap-buffer-overflow protections, posing a security risk. `Curl_http2_done` is used instead of upstream's `http2_data_done`, which is acceptable if `Curl_http2_done` is the correct function in the target codebase, and it calls `free_push_headers` correctly.", 'suggested_fixes': 'Replace `realloc` with `Curl_saferealloc` in `on_header`. Replace `free` with `Curl_safefree` in `free_push_headers`. Ensure that the correct type is used consistently. Verify that `Curl_http2_done` is the correct function name in the target codebase and that it correctly calls `free_push_headers`.'}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch accurately reflects the upstream changes within the context of the abstracted code. All critical logic related to parsing PAX headers, handling GNU sparse files, and decoding fields is present and consistent with the upstream patch. There are no functional or security-relevant discrepancies.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch accurately reflects the upstream changes within the context of the abstracted target code. All significant logic related to parsing PAX headers, handling GNU sparse formats (versions 0.0, 0.1, and 1.0), decoding PAX fields, and managing potential errors is present and consistent with the upstream patch. The use of `_header_length_prefix_re`, the structure of the parsing loop, error handling with `InvalidHeaderError` and `SubsequentHeaderError`, and the decoding logic using `_decode_pax_field` are all correctly implemented. The handling of different GNU sparse versions (0.0, 0.1 and 1.0) is also correctly backported. The logic for applying PAX info to the next header is also correctly implemented.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The discrepancy notes a difference in test class organization. The backported patch places `test_pax_header_bad_formats` within `PaxReadTest`, while the upstream (according to the description) likely placed it in a write-related test class. The provided abstracted code confirms the backported location. Since the test logic itself is identical, and the test is still present and functional within the backported codebase, this difference is acceptable. It reflects a difference in test suite structure between the upstream and backported versions, but doesn't affect the functionality or security of the tested code. The test's purpose (testing bad PAX header formats) is still fulfilled.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': 'The backported patch is correct. The code logic is identical between the upstream and backported versions. The only differences are in code style (e.g. using `match :=` vs assigning `match` on a separate line, and minor differences in error handling which are functionally equivalent). The core logic for parsing the PAX headers, including the length check, remains the same, ensuring the vulnerability is addressed.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_tarfile.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch is correct. The test case `test_pax_header_bad_formats` is present and correctly implemented. The purpose of the test is to verify that `tarfile.open` raises a `tarfile.ReadError` when presented with malformed PAX headers. The code constructs a tarfile with a valid PAX header (`11 foo=bar\\n`), then replaces this valid header with various invalid ones, and finally asserts that `tarfile.open` raises the expected exception. The logic and assertions are consistent with the intent of testing the handling of bad PAX header formats.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/http/cookies.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided backported patch and abstracted target code show no discrepancies. The _unquote function, which is the focus, is identical in both. The expert review confirms no security or functionality risks.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ Lib/test/test_http_cookies.py
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided discrepancies dictionary is empty, indicating no differences were found between the backported patch and the upstream patch. Therefore, the backport is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code is identical between the upstream and backported patches, focusing on the abstracted view of the target code. No discrepancies are present in the given context.', 'suggested_fixes': 'N/A'}
+--------------------------------------------------------------------------------
+File:
+ src/funcs.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided code is an abstraction, and the diff is empty. There are no discrepancies to analyze. The backport is assumed correct based on the available information.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_session.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided backported patch and abstracted target code show no discrepancies. The code logic related to handling HTTP/2 headers, stream management, and error handling is consistent. The judgment from the previous expert confirms no security or functionality risks.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_stream.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The review indicates no discrepancies, meaning the backported patch aligns with the upstream patch in terms of security and functionality.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ modules/http2/h2_stream.h
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': "The backported patch only adds a new header file, and there are no code conflicts or logical differences compared to the upstream patch. The added header file defines the structure and function prototypes related to `h2_stream`, which is a common practice in C programming for modularity and code organization. The target code abstraction includes all the definitions from the backported patch, indicating that it's a valid and self-contained addition.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/kdc/do_tgs_req.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': 'The backported patch misses handling `KDC_OPT_RENEW` in the conditional check, unlike upstream which covers both `KDC_OPT_VALIDATE` and `KDC_OPT_RENEW`. This omission means the backported code will not execute the intended logic when a renewal is requested, potentially leading to incorrect ticket validation or renewal behavior. Additionally, the backported patch clears `TKT_FLG_INVALID`, which is correct, but only does so if `KDC_OPT_VALIDATE` is set. The upstream patch does this for both `KDC_OPT_VALIDATE` and `KDC_OPT_RENEW`. This is a functional and security issue, as it could lead to invalid tickets being incorrectly treated as valid.', 'suggested_fixes': 'Modify the conditional check to include `KDC_OPT_RENEW`: `if (isflagset(request->kdc_options, KDC_OPT_VALIDATE) || isflagset(request->kdc_options, KDC_OPT_RENEW))`. Ensure that `clear(enc_tkt_reply.flags, TKT_FLG_INVALID);` is executed in both the validate and renew cases, as intended by the upstream patch.'}
+--------------------------------------------------------------------------------
+File:
+ src/kdc/do_tgs_req.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided context shows no discrepancies. The backported patch aligns perfectly with the abstracted target code. All code snippets related to KDC_OPT_VALIDATE, KDC_OPT_RENEW, and the handling of ticket times are present and logically equivalent.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ ssh.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': 'The missing update to the RCSID version identifier in the file header is a minor discrepancy. It does not affect the functionality or security of the code. RCSID is primarily for version tracking and does not impact the runtime behavior.', 'suggested_fixes': "None needed. While updating the RCSID would be good practice for consistency, it's not a critical issue for the backport's correctness."}
+--------------------------------------------------------------------------------
+File:
+ ssh.c
+parsed functions:
+ {'is_correct': 'No', 'difference_type': 'Major', 'explanation': "There are multiple discrepancies. 1) The backported patch adds an extra 'usage();' call after the 'fatal' call in the username check.  'fatal' is assumed to be a non-returning function (as it's used for error handling before exiting), so the extra 'usage()' call is unreachable and unnecessary. 2) The backported patch assigns to 'host_arg' directly, whereas the provided context suggests it should be 'options.host_arg'.  This is likely a bug, as the code uses a global 'host_arg' and an 'options' struct. The original intent was probably to modify a field within the options struct. 3) The missing RCSID is a minor issue, but should be addressed for consistency.", 'suggested_fixes': ['Remove the extra \'usage();\' call after \'fatal("remote username contains invalid characters");\'.', "Change 'host_arg = xstrdup(host);' to 'options.host_arg = xstrdup(host);' or the correct struct member if it's not within options.", 'Update the RCSID to match the upstream patch (1.599).']}
+--------------------------------------------------------------------------------
+File:
+ cpan/CPAN/lib/CPAN/HTTP/Client.pm
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The backported patch is correct. The only notable difference is the version number, which is expected. All other code is identical, including the critical `mirror` function and its helper functions. The abstracted code confirms that no relevant logic was altered.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ cpan/CPAN/lib/CPAN/HTTP/Client.pm
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided information indicates no discrepancies between the upstream and backported patches. All abstracted code and the expert judgment confirm this.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/gpasswd.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'None', 'explanation': 'The provided backported patch matches the abstracted target code and the described discrepancies are empty. Therefore, the backport is considered correct.', 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------
+File:
+ src/gpasswd.c
+parsed functions:
+ {'is_correct': 'Yes', 'difference_type': 'Minor', 'explanation': "The discrepancy is justified. `agetpass` is likely a macro or function defined elsewhere in the upstream codebase, specific to that version or build environment. The backported patch uses `getpass`, which is a standard C library function and serves the same purpose: retrieving a password from the user without echoing it to the console. The core logic of password comparison, encryption, and zeroing out memory remains the same. The use of `getpass` is acceptable in the backported context, assuming it's available and secure in the target environment.", 'suggested_fixes': 'None'}
+--------------------------------------------------------------------------------

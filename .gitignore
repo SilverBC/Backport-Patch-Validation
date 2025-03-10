@@ -1,0 +1,5 @@
+tree-sitter-c/
+tree-sitter-python/
+build/
+samples/
+

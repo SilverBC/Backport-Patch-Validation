@@ -1,0 +1,3 @@
+json_repair==0.39.1
+openai==1.65.2
+unidiff==0.7.5
