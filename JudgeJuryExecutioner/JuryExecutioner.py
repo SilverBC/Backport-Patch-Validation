@@ -80,7 +80,7 @@ def main():
 
     # process each sample file sequentially
     for sample in sample_folders:
-        if int(sample.lstrip("0")) <= 6:        # for testing purposes
+        if int(sample.lstrip("0")) < 4:        # for testing purposes
             continue
 
         upstream_patch_file = os.path.join(SAMPLES_DIR, sample, "upstream.patch")
